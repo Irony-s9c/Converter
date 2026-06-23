@@ -1,5 +1,5 @@
 #define AppName "Media Converter"
-#define AppVersion "1.0.0"
+#define AppVersion "1.1.0"
 #define AppPublisher "Aki"
 #define AppURL "https://github.com/Irony-s9c"
 #define AppExe "converter.exe"

@@ -1,7 +1,7 @@
 VSVersionInfo(
   ffi=FixedFileInfo(
-    filevers=(1, 0, 0, 0),
-    prodvers=(1, 0, 0, 0),
+    filevers=(1, 1, 0, 0),
+    prodvers=(1, 1, 0, 0),
     mask=0x3f,
     flags=0x0,
     OS=0x40004,
@@ -16,12 +16,12 @@ VSVersionInfo(
         [
           StringStruct(u'CompanyName',      u'Aki'),
           StringStruct(u'FileDescription',  u'High Quality Media Converter'),
-          StringStruct(u'FileVersion',      u'1.0.0.0'),
+          StringStruct(u'FileVersion',      u'1.1.0.0'),
           StringStruct(u'InternalName',     u'converter'),
           StringStruct(u'LegalCopyright',   u'Copyright (C) 2025 Aki'),
           StringStruct(u'OriginalFilename', u'converter.exe'),
           StringStruct(u'ProductName',      u'Media Converter'),
-          StringStruct(u'ProductVersion',   u'1.0.0.0'),
+          StringStruct(u'ProductVersion',   u'1.1.0.0'),
         ]
       )
     ]),

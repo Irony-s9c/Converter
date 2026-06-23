@@ -1,6 +1,8 @@
 import os
 import sys
+import json
 import threading
+import urllib.request
 import tkinter as tk
 from tkinter import filedialog, scrolledtext, ttk
 import webbrowser
@@ -9,6 +11,9 @@ import shutil
 from pathlib import Path
 import subprocess
 from pillow_heif import register_heif_opener
+
+VERSION     = "1.1.0"
+GITHUB_REPO = "Irony-s9c/media-converter"
 
 register_heif_opener()
 
@@ -33,6 +38,61 @@ class App(tk.Tk):
         self.configure(bg="#ECE9D8")
         self._setup_styles()
         self._setup_ui()
+
+        threading.Thread(target=self._check_for_update, daemon=True).start()
+
+    def _check_for_update(self):
+        try:
+            url = f"https://api.github.com/repos/{GITHUB_REPO}/releases/latest"
+            req = urllib.request.Request(url, headers={"User-Agent": "MediaConverter"})
+            with urllib.request.urlopen(req, timeout=5) as res:
+                data = json.loads(res.read())
+            latest = data["tag_name"].lstrip("v")
+            def to_tuple(v):
+                return tuple(int(x) for x in v.split("."))
+            if to_tuple(latest) > to_tuple(VERSION):
+                self.after(0, self._show_update_dialog, latest)
+        except Exception:
+            pass
+
+    def _show_update_dialog(self, latest):
+        dialog = tk.Toplevel(self)
+        dialog.title("Update Available")
+        dialog.configure(bg="#ECE9D8")
+        dialog.resizable(False, False)
+        dialog.grab_set()
+
+        title_bar = tk.Frame(dialog, bg="#0054E3")
+        title_bar.pack(fill="x")
+        tk.Label(title_bar, text="アップデートのお知らせ", font=("Tahoma", 10, "bold"),
+                 bg="#0054E3", fg="white", padx=10, pady=6).pack(side="left")
+
+        body = tk.Frame(dialog, bg="#ECE9D8", padx=25, pady=20)
+        body.pack(fill="both", expand=True)
+
+        tk.Label(body, text=f"新しいバージョン  v{latest}  が公開されています。",
+                 font=("Tahoma", 10), bg="#ECE9D8").pack(anchor="w")
+        tk.Label(body, text=f"現在のバージョン: v{VERSION}",
+                 font=("Tahoma", 9), bg="#ECE9D8", fg="#666666").pack(anchor="w", pady=(4, 18))
+
+        btn_frame = tk.Frame(body, bg="#ECE9D8")
+        btn_frame.pack(anchor="e")
+
+        def download():
+            webbrowser.open(f"https://github.com/{GITHUB_REPO}/releases/latest")
+            dialog.destroy()
+
+        tk.Button(btn_frame, text="ダウンロード", command=download,
+                  font=("Tahoma", 9), bg="#ECE9D8", relief="raised", borderwidth=2,
+                  activebackground="#E3F4FF", width=12).pack(side="left", padx=(0, 6))
+        tk.Button(btn_frame, text="後で", command=dialog.destroy,
+                  font=("Tahoma", 9), bg="#ECE9D8", relief="raised", borderwidth=2,
+                  activebackground="#E3F4FF", width=8).pack(side="left")
+
+        dialog.update_idletasks()
+        x = self.winfo_x() + (self.winfo_width() - dialog.winfo_width()) // 2
+        y = self.winfo_y() + (self.winfo_height() - dialog.winfo_height()) // 2
+        dialog.geometry(f"+{x}+{y}")
 
     def _setup_styles(self):
         style = ttk.Style()

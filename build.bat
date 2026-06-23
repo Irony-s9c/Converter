@@ -106,7 +106,7 @@ if not exist ".gitignore" (
     echo *.pyc>>.gitignore
 )
 
-git add converter.py converter.spec version_info.txt installer.iss build.bat update_version.py logo.ico CHANGES.txt .gitignore
+git add converter.py converter.spec version_info.txt installer.iss build.bat update_version.py logo.ico CHANGES.txt .gitignore README.md
 git commit -m "Release v!VERSION!"
 if errorlevel 1 ( echo [ERROR] Commit failed. & pause & exit /b 1 )
 

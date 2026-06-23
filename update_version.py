@@ -41,6 +41,14 @@ def main():
     with open('installer.iss', 'w', encoding='utf-8') as f:
         f.write(iss)
 
+    with open('converter.py', 'r', encoding='utf-8') as f:
+        code = f.read()
+
+    code = re.sub(r'^VERSION\s*=\s*"[^"]*"', f'VERSION     = "{ver_short}"', code, flags=re.MULTILINE)
+
+    with open('converter.py', 'w', encoding='utf-8') as f:
+        f.write(code)
+
     print(f"Version: {ver_short}  (build: {ver_dot4})")
 
 if __name__ == '__main__':
