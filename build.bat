@@ -108,7 +108,7 @@ if not exist ".gitignore" (
 
 git add converter.py converter.spec version_info.txt installer.iss build.bat update_version.py logo.ico CHANGES.txt .gitignore README.md
 git commit -m "Release v!VERSION!"
-if errorlevel 1 ( echo [ERROR] Commit failed. & pause & exit /b 1 )
+if errorlevel 1 echo [GIT] Nothing new to commit.
 
 set PUSHED=0
 git remote get-url origin > nul 2>&1
@@ -120,7 +120,7 @@ if errorlevel 1 (
 )
 
 if "!PUSHED!"=="0" (
-    git push -u origin main
+    git push -u origin HEAD
     if errorlevel 1 ( echo [ERROR] git push failed. & pause & exit /b 1 )
 )
 
